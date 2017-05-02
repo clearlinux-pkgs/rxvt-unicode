@@ -4,7 +4,7 @@
 #
 Name     : rxvt-unicode
 Version  : 9.22
-Release  : 1
+Release  : 2
 URL      : http://dist.schmorp.de/rxvt-unicode/rxvt-unicode-9.22.tar.bz2
 Source0  : http://dist.schmorp.de/rxvt-unicode/rxvt-unicode-9.22.tar.bz2
 Summary  : No detailed summary available
