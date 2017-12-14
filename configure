@@ -1,1 +1,1 @@
---disable-static --enable-256color --disable-perl
+--disable-static --enable-256color --disable-perl --enable-xft

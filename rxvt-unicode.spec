@@ -4,7 +4,7 @@
 #
 Name     : rxvt-unicode
 Version  : 9.22
-Release  : 2
+Release  : 3
 URL      : http://dist.schmorp.de/rxvt-unicode/rxvt-unicode-9.22.tar.bz2
 Source0  : http://dist.schmorp.de/rxvt-unicode/rxvt-unicode-9.22.tar.bz2
 Summary  : No detailed summary available
@@ -12,8 +12,9 @@ Group    : Development/Tools
 License  : GPL-3.0
 Requires: rxvt-unicode-bin
 Requires: rxvt-unicode-doc
+BuildRequires : libXft
+BuildRequires : libXft-dev
 BuildRequires : pkgconfig(ice)
-BuildRequires : pkgconfig(x11)
 
 %description
 RXVT-UNICODE/URXVT FREQUENTLY ASKED QUESTIONS
@@ -43,18 +44,23 @@ doc components for the rxvt-unicode package.
 %setup -q -n rxvt-unicode-9.22
 
 %build
+export http_proxy=http://127.0.0.1:9/
+export https_proxy=http://127.0.0.1:9/
+export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-%configure --disable-static --disable-static --enable-256color --disable-perl
+export SOURCE_DATE_EPOCH=1513210557
+%configure --disable-static --disable-static --enable-256color --disable-perl --enable-xft
 make V=1  %{?_smp_mflags}
 
 %check
 export LANG=C
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
-export no_proxy=localhost
+export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
+export SOURCE_DATE_EPOCH=1513210557
 rm -rf %{buildroot}
 %make_install
 

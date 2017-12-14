@@ -1,0 +1,22 @@
+Configure miss: sys/event.h usability
+Configure miss: sys/event.h presence
+Configure miss: sys/event.h
+Configure miss: port.h usability
+Configure miss: port.h presence
+Configure miss: port.h
+Configure miss: port_create
+Configure miss: gdk-pixbuf-2.0
+Configure miss: libstartup-notification-1.0
+Configure miss: xmu
+Configure miss: sys/byteorder.h usability
+Configure miss: sys/byteorder.h presence
+Configure miss: sys/byteorder.h
+Configure miss: sys/strredir.h usability
+Configure miss: sys/strredir.h presence
+Configure miss: sys/strredir.h
+Configure miss: updlastlogx
+Configure miss: struct lastlogx
+Configure miss: broken XIM callback
+Configure miss: revoke
+Configure miss: _getpty
+Configure miss: tty group
