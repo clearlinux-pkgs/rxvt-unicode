@@ -16,7 +16,7 @@ Configure miss: sys/strredir.h presence
 Configure miss: sys/strredir.h
 Configure miss: updlastlogx
 Configure miss: struct lastlogx
-Configure miss: broken XIM callback
+Configure miss: working Xlocale
 Configure miss: revoke
 Configure miss: _getpty
 Configure miss: tty group
