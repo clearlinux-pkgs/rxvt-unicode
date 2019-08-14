@@ -4,33 +4,42 @@
 #
 Name     : rxvt-unicode
 Version  : 9.22
-Release  : 7
+Release  : 8
 URL      : http://dist.schmorp.de/rxvt-unicode/rxvt-unicode-9.22.tar.bz2
 Source0  : http://dist.schmorp.de/rxvt-unicode/rxvt-unicode-9.22.tar.bz2
-Summary  : Unicode enabled rxvt-clone terminal emulator (urxvt)
+Summary  : A customizable terminal emulator forked from rxvt
 Group    : Development/Tools
 License  : GPL-3.0
 Requires: rxvt-unicode-bin = %{version}-%{release}
+Requires: rxvt-unicode-data = %{version}-%{release}
 Requires: rxvt-unicode-license = %{version}-%{release}
 Requires: rxvt-unicode-man = %{version}-%{release}
 BuildRequires : libXft
 BuildRequires : libXft-dev
+BuildRequires : ncurses
+Patch1: 0001-Treat-unknown-capabilities-as-user-defined.patch
 
 %description
-RXVT-UNICODE/URXVT FREQUENTLY ASKED QUESTIONS
-Meta, Features & Commandline Issues
-My question isn't answered here, can I ask a human?
-Before sending me mail, you could go to IRC: "irc.freenode.net", channel
-"#rxvt-unicode" has some rxvt-unicode enthusiasts that might be
-interested in learning about new and exciting problems (but not FAQs :).
+Features of rxvt-unicode include international language support through
+Unicode, transparency, the ability to display multiple font types and support
+for Perl extensions.
 
 %package bin
 Summary: bin components for the rxvt-unicode package.
 Group: Binaries
+Requires: rxvt-unicode-data = %{version}-%{release}
 Requires: rxvt-unicode-license = %{version}-%{release}
 
 %description bin
 bin components for the rxvt-unicode package.
+
+
+%package data
+Summary: data components for the rxvt-unicode package.
+Group: Data
+
+%description data
+data components for the rxvt-unicode package.
 
 
 %package license
@@ -51,13 +60,14 @@ man components for the rxvt-unicode package.
 
 %prep
 %setup -q -n rxvt-unicode-9.22
+%patch1 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1563208061
+export SOURCE_DATE_EPOCH=1565806145
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -77,11 +87,15 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1563208061
+export SOURCE_DATE_EPOCH=1565806145
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/rxvt-unicode
 cp COPYING %{buildroot}/usr/share/package-licenses/rxvt-unicode/COPYING
 %make_install
+## install_append content
+mkdir -p %{buildroot}/usr/share/terminfo
+mv $HOME/.terminfo/* %{buildroot}/usr/share/terminfo/
+## install_append end
 
 %files
 %defattr(-,root,root,-)
@@ -91,6 +105,11 @@ cp COPYING %{buildroot}/usr/share/package-licenses/rxvt-unicode/COPYING
 /usr/bin/urxvt
 /usr/bin/urxvtc
 /usr/bin/urxvtd
+
+%files data
+%defattr(-,root,root,-)
+/usr/share/terminfo/r/rxvt-unicode
+/usr/share/terminfo/r/rxvt-unicode-256color
 
 %files license
 %defattr(0644,root,root,0755)

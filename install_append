@@ -1,0 +1,2 @@
+mkdir -p %{buildroot}/usr/share/terminfo
+mv $HOME/.terminfo/* %{buildroot}/usr/share/terminfo/

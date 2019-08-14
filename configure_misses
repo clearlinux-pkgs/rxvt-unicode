@@ -17,6 +17,10 @@ Configure miss: sys/strredir.h
 Configure miss: updlastlogx
 Configure miss: struct lastlogx
 Configure miss: working Xlocale
+Configure miss: stropts.h usability
+Configure miss: stropts.h presence
+Configure miss: stropts.h
 Configure miss: revoke
 Configure miss: _getpty
+Configure miss: isastream
 Configure miss: tty group
