@@ -4,7 +4,7 @@
 #
 Name     : rxvt-unicode
 Version  : 9.22
-Release  : 9
+Release  : 10
 URL      : http://dist.schmorp.de/rxvt-unicode/rxvt-unicode-9.22.tar.bz2
 Source0  : http://dist.schmorp.de/rxvt-unicode/rxvt-unicode-9.22.tar.bz2
 Summary  : A customizable terminal emulator forked from rxvt
@@ -60,6 +60,7 @@ man components for the rxvt-unicode package.
 
 %prep
 %setup -q -n rxvt-unicode-9.22
+cd %{_builddir}/rxvt-unicode-9.22
 %patch1 -p1
 
 %build
@@ -67,14 +68,14 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1565806145
+export SOURCE_DATE_EPOCH=1605136758
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
 export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
 export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 %configure --disable-static --disable-static --enable-256color --disable-perl --enable-xft
 make  %{?_smp_mflags}
@@ -84,13 +85,13 @@ export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-make VERBOSE=1 V=1 %{?_smp_mflags} check
+make %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1565806145
+export SOURCE_DATE_EPOCH=1605136758
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/rxvt-unicode
-cp COPYING %{buildroot}/usr/share/package-licenses/rxvt-unicode/COPYING
+cp %{_builddir}/rxvt-unicode-9.22/COPYING %{buildroot}/usr/share/package-licenses/rxvt-unicode/8624bcdae55baeef00cd11d5dfcfa60f68710a02
 %make_install
 ## install_append content
 mkdir -p %{buildroot}/usr/share/terminfo
@@ -113,7 +114,7 @@ mv $HOME/.terminfo/* %{buildroot}/usr/share/terminfo/
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/rxvt-unicode/COPYING
+/usr/share/package-licenses/rxvt-unicode/8624bcdae55baeef00cd11d5dfcfa60f68710a02
 
 %files man
 %defattr(0644,root,root,0755)
