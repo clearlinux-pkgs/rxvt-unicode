@@ -4,9 +4,9 @@
 #
 Name     : rxvt-unicode
 Version  : 9.26
-Release  : 11
-URL      : http://dist.schmorp.de/rxvt-unicode/rxvt-unicode-9.26.tar.bz2
-Source0  : http://dist.schmorp.de/rxvt-unicode/rxvt-unicode-9.26.tar.bz2
+Release  : 12
+URL      : http://dist.schmorp.de/rxvt-unicode/Attic/rxvt-unicode-9.26.tar.bz2
+Source0  : http://dist.schmorp.de/rxvt-unicode/Attic/rxvt-unicode-9.26.tar.bz2
 Summary  : A customizable terminal emulator forked from rxvt
 Group    : Development/Tools
 License  : GPL-3.0
@@ -69,15 +69,15 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1621440292
+export SOURCE_DATE_EPOCH=1658206826
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
-export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=auto "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto "
 %configure --disable-static --disable-static --enable-256color --disable-perl --enable-xft
 make  %{?_smp_mflags}
 
@@ -89,7 +89,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1621440292
+export SOURCE_DATE_EPOCH=1658206826
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/rxvt-unicode
 cp %{_builddir}/rxvt-unicode-9.26/COPYING %{buildroot}/usr/share/package-licenses/rxvt-unicode/8624bcdae55baeef00cd11d5dfcfa60f68710a02
