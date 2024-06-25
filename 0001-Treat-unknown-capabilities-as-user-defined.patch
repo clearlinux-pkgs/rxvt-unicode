@@ -1,26 +1,30 @@
-From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: Patrick McCarty <patrick.mccarty@intel.com>
-Date: Wed, 14 Aug 2019 10:53:45 -0700
+From b57c4d1c120f787d50e05ef15063142c95f92d83 Mon Sep 17 00:00:00 2001
+From: William Douglas <william.douglas@intel.com>
+Date: Mon, 24 Jun 2024 12:45:43 -0700
 Subject: [PATCH] Treat unknown capabilities as user-defined
 
 See discussion from
 https://unix.stackexchange.com/questions/469349/getting-rxvt-unicode-unknown-capability-while-compiling-urxvt-9-22
 
 Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
+Signed-off-by: William Douglas <william.douglas@intel.com>
 ---
  doc/Makefile.in | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/doc/Makefile.in b/doc/Makefile.in
-index adc4616..83c477e 100644
+index e3d1fe8..23bffac 100644
 --- a/doc/Makefile.in
 +++ b/doc/Makefile.in
-@@ -98,7 +98,7 @@ install: all
- 	$(INSTALL_DATA) rxvtc.1.man $(DESTDIR)$(man1dir)/$(RXVTNAME)c.$(man1ext)
- 	$(INSTALL_DATA) rxvtd.1.man $(DESTDIR)$(man1dir)/$(RXVTNAME)d.$(man1ext)
- 	$(INSTALL_DATA) rxvt.7.man  $(DESTDIR)$(man7dir)/$(RXVTNAME).$(man7ext)
--	@TIC@ $(srcdir)/etc/rxvt-unicode.terminfo
-+	@TIC@ -x $(srcdir)/etc/rxvt-unicode.terminfo
+@@ -69,7 +69,7 @@ all:
+ 	sed $(SEDREPLACE) <$< | podselect -section "RXVT-UNICODE\/URXVT FREQUENTLY ASKED QUESTIONS" | pod2text >$@
  
- distdepend: alldoc
+ $(srcdir)/etc/rxvt-unicode.termcap: $(srcdir)/etc/rxvt-unicode.terminfo
+-	tic -C $< >$@
++	tic -x -C $< >$@
  
+ tags allbin:
+ 
+-- 
+2.45.1
+

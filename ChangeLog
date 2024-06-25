@@ -37,12 +37,130 @@ TODO: warn with a graphical message when env has been modified
 TODO: c&c perl socket via daemon-ext mechanism
 TODO: simplify extension metainfo cache, cache on disk
 TODO: URxvt::Ext::Name installs urxvt ext name and provides pod/manpage for URxvt::Ext::Name
-TODO: üpixel droppins idenrasm,ll,scrollup
+TODO: pixel droppins idenrasm,ll,scrollup
 TODO: cuu/cud and probably others default to 1 when arg is 0, not just missing, in xterm/vt102, but not in rxvt
-
-TODO: confirm-paste should be the default
-TODO: xterm-osc does not autoload background
+TODO: clean up the resource vs. long option mess, especially in the manpage.
 TODO: think about daemon delaying urxvt client exit.
+IDEA: use harfbuzz to render combining sequences, maybe also complex scripts
+TODO: rclock horribly time-biased
+TODO: rclock iso date mode?
+TODO: printf "\e[4:3m" - "undercurl" - should probbaly be interpreted as underline, rather than \e[43m
+
+9.31 Mon 02 Jan 2023 18:13:16 CET
+	- implement a fix for CVE-2022-4170 (reported and analyzed by David Leadbeater).
+          While present in version 9.30, it should not be exploitable. It is exploitable
+          in versions 9.25 and 9.26, at least, and allows anybody controlling output to
+          the terminal to execute arbitrary code in the urxvt process.
+	- the background extension no longer requires off focus fading support
+          to be compiled in.
+        - the confirm-paste extension now offers a choice betwene pasting the original
+          or a sanitized version, and also frees up memory used to store the paste text
+          immediately.
+        - fix compiling without frills.
+        - fix rewrapMode: never.
+        - fix regression that caused urxvt to no longer emit responses
+          to OSC color queries other than OSC 4 ones.
+        - fix regression that caused urxvt to no longer process OSC 705.
+        - restore CENTURY to be 1900 to "improve" year parsing in urclock (or at
+          least go back to the old interpretation) (based on an analysis
+          by Tommy Pettersson).
+        - exec_async (used e.g. by the matcher extension to spawn processes) now
+          sets the URXVT_EXT_WINDOWID variable to the window id of the terminal.
+        - implement -fps option/refreshRate resource to change the default 60 Hz
+          maximum refresh limiter. I always wanted an fps option, but had to
+          wait for a user requesting it.
+        - new clickthrough extension.
+        - perl now also requires Xext.
+        - X region and shape extension functionality has been exposed to perl
+          extensions.
+        - RENDER extension no longer depends on ENABLE_XIM_ONTHESPOT.
+
+9.30 Sat 27 Nov 2021 21:07:09 CET
+	- the background extension did not initialise properly when automatically
+          loaded via the OSC.
+	- new "on_attach" hook type implemented, to initialise late-loading
+          extensions.
+
+9.29 Mon 22 Nov 2021 18:07:14 CET
+	- libptytty (http://dist.schmorp.de/libptytty/) is now a required
+          external dependency.
+	- enable confirm-paste extension by default, can be disabled by e.g.
+          URxvt.perl-ext: -confirm-paste
+        - Key bindings specified with the -keysym option or with resources of
+          the form URxvt*keysym work again. Such resources, as opposed to
+          resources of the form URxvt.keysym, were not officially allowed but
+          accepted, so ignoring them is considered a regression.
+        - new option/resource -rm/rewrapMode, which sets the line rewrap
+          mode to auto, never or always.
+        - new option/resource -dpb/disablePasteBrackets, which can be used to
+          disable bracketed paste mode sequences, as more and more programs
+          abuse these sequences (typically in the name of security, but these
+          sequences are not improving security). Also, bracketed paste mode
+          is now under frills.
+        - add manpage for urclock.
+        - confirm-paste wrongly considered brackets as ctrlchars (patch by
+          Jakub Wilk, debian bug #995244).
+	- if urxvt cannot detect a good estimate for font width (because a font does
+          not contain latin characters at all for example), it will now fall
+          back to xft's max_advance_width, which works well with some fonts. It
+          currently will warn about this.
+	- do not render variation selectors in the default font as boxes, treat
+          them as zero-width characters.
+        - change combining character architecture to allow fonts to handle
+          combining sequences on their own. This could allow future renderers
+          to be more intelligent about these sequences.
+        - use the previous enhancement to allow unicode characters outside of the
+          BMP to be rendered even without --enable-unicode3, as long as an
+          xft with the character is configured.
+          It's recommended to stay with disabled unicode3 even more now.
+        - freetype/xft have been verified to return nonsensical offsets for
+          combining characters. urxvt tries to compensate to some extent,
+          but diacritics will be slightly off in many cases, and far off in
+          some cases (e.g. input mono).
+        - when checking for overlap/careful handling, take non-basefont
+          character shifts into account.
+        - extensions can now request autoloading on OSC and Perl OSC sequences,
+          implement this for the background, clipboard-osc and overlay-osc
+          extensions.
+        - the background extension will now be autoloaded when the OSC 20 or 705
+          sequence is received.
+        - added OSC 776 sequence to return character cell width, height and font
+          ascent, which is useful when using urxvt as slave to calculate window
+          size form or to row/column count.
+        - matcher extension documentation now points out some requirements for
+          regular expressions. the default url matching regex will now try
+          to match IRLs in addition to URLs.
+	- The view_start perl method now scrolls to the bottom also when the
+	  argument is greater than 0.
+	- eval scroll actions now scroll to the bottom when scrolling down and
+	  there are less lines to scroll than the ones requested (reported by
+	  Stephen Talley).
+	- allow perl-ext and perl-ext-common to override autoloaded extensions.
+          this allows tabbed to disable itself in subtabs, avoiding recursive
+          loading.
+	- update precompose table to unicode 13.0.
+        - update charset conversion tables to perl 5.32 (this only affected
+          cs_koi8_u_from_unicode).
+        - unicode characters > 0x100000 were not handled correctly w.r.t.
+          font rendering.
+        - replace bitstream vera by dejavu sans, as it has replaced the former
+          almost everywhere.
+        - urxvt will now try tic -x first and only fall back to tic without -x
+          when tic -x fails.
+        - fix urclock not erasing the old date on the clock face, causing
+          overdraw, plus a host of other small fixes and improvements.
+        - shave off over 1K of code size from urclock by replacing the sine table
+          with a slightly less accurate fixed point approximation.
+        - do not specify indentation with =over in pod, this is no longer
+          needed with semi-modern pod tools and gives the formatter more
+          stylistic freedom.
+        - background extension did not set the "size-sensitive" flag
+          when repeat mode wasn't normal.
+        - extensions are now subjected to "use strict 'subs'".
+        - avoid crashing when xft successfully opens a font but then somehow
+          can't lock the face.
+        - locale_decode/encode api methods now pass through undef unchanged.
+        - fix undefined behaviour in the perl hook function, as diagnosed by clang.
 
 9.26 Fri May 14 19:14:14 CEST 2021
 	- ev_iouring.c was wrongly required during compilation, and wrongly
@@ -55,14 +173,14 @@ TODO: think about daemon delaying urxvt client exit.
 	- add support for systemd socket-based activation - debian bug #917105,
 	  freebsd bug #234276.
 	- do not destruct perl on exit anymore: this might fail for a variety of
-          reasons, and takes unneccessary time.
+          reasons, and takes unnecessary time.
         - remove any macros from urxvtperl manpage(s), should fix debian
           bug 858385.
 	- the old bg image resources are now provided by the background
 	  extension, and perl is thus required for bg image support. No
 	  configuration change is needed: urxvt autoloads the background
 	  ext if any bg image resource/option is present (for OSC sequences to
-          work you need to enable it explicity). The old bg image
+          work you need to enable it explicitly). The old bg image
 	  resources are also now deprecated; users are encouraged to
 	  switch to the new bg image interface (see man urxvt-background).
         - confirm-paste now checks for any ctlchars, not just newlines.
@@ -147,6 +265,7 @@ TODO: think about daemon delaying urxvt client exit.
 	- a key combination bound to 'matcher:select' can now be used
 	  to cycle through the matches in matcher.
         - change perl integer accessors (->width et al.) into mutators.
+        - this version has ben verified to work with perl 5.8.3.
 
 9.21 Wed Dec 31 14:50:03 CET 2014
 	- the "moa redraw 8-bit british vintage colour management" release.

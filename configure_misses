@@ -1,17 +1,11 @@
-Configure miss: _getpty
 Configure miss: g++ option to enable C++11 features
-Configure miss: gdk-pixbuf-2.0
-Configure miss: isastream
-Configure miss: libstartup-notification-1.0
+Configure miss: gdk-pixbuf-2.0 (using pkg-config)
+Configure miss: libstartup-notification-1.0 (using pkg-config)
 Configure miss: port.h
 Configure miss: port_create
-Configure miss: revoke
-Configure miss: stropts.h
-Configure miss: struct lastlogx
 Configure miss: sys/byteorder.h
 Configure miss: sys/event.h
 Configure miss: sys/strredir.h
-Configure miss: tty group
-Configure miss: updlastlogx
 Configure miss: working Xlocale
-Configure miss: xmu
+Configure miss: working libsupc++
+Configure miss: xmu (using pkg-config)
